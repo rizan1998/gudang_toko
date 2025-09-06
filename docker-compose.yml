@@ -1,0 +1,54 @@
+
+
+services:
+  # PHP Service
+  app:
+    build: .  # Ganti dari 'image' ke 'build'
+    container_name: gudang_toko_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    networks:
+      - gudang_toko_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # Web Server
+  webserver:
+    image: nginx:alpine
+    container_name: gudang_toko_web
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - gudang_toko_network
+    depends_on:
+      - app
+
+  # Database MySQL
+  db:
+    image: mysql:8.0
+    container_name: gudang_toko_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: gudang_toko
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - gudang_toko_network
+
+networks:
+  gudang_toko_network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
