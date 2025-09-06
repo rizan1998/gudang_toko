@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->string("name")->index();
+            $table->string("phone")->index();
+            $table->unsignedBigInteger("sub_total");
+            $table->unsignedBigInteger("tax_total");
+            $table->unsignedBigInteger("grand_total")->index();
+            $table->foreignId('merchant_id')->constrained()->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
