@@ -8,7 +8,7 @@
     class WarehouseProductRepository
     {
 
-        public function getProductsByWarehouseId(int $warehouseId, int $fields = ['*']): ?WarehouseProduct
+        public function getByWarehouseAndProduct(int $warehouseId, int $fields = ['*']): ?WarehouseProduct
         {
             return \App\Models\WarehouseProduct::where('warehouse_id', $warehouseId)
                 ->select($fields)
@@ -18,7 +18,7 @@
 
         public function updateStock($warehouseId, $productId, $stock): WarehouseProduct
         {
-            $warehouseProduct = $this->getProductsByWarehouseId($warehouseId, $productId);
+            $warehouseProduct = $this->getByWarehouseAndProduct($warehouseId, $productId);
 
             if (!$warehouseProduct) {
                 throw ValidationException::withMessages(['message' => 'Product not found in the specified warehouse.']);
