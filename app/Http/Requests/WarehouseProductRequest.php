@@ -11,7 +11,7 @@ class WarehouseProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class WarehouseProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+
+            'stock' => 'required|integer|min:0',
         ];
     }
 }

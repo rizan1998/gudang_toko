@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class WarehouseService
 {
-    private   $warehouseRepository;
+    private WarehouseRepository $warehouseRepository;
 
     public function __construct(WarehouseRepository $warehouseRepository)
     {
